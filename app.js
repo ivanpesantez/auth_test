@@ -17,10 +17,18 @@ const dbName = "userDB"
 
 mongoose.connect(process.env.URL, {dbName: dbName}).then(console.log("Server connected")).catch(error => handleError(error));
 
-const userSchema = {
+//-------- LEVEL 2 SECURITY ---------//
+
+const userSchema = new mongoose.Schema ({
     email: String,
     password: String
-};
+});
+
+const secret = "Thisisourlittlesecret";
+
+userSchema.plugin(encrypt, { secret: secret, encryptedFields: ["password"] });
+
+//-------- LEVEL 2 SECURITY ---------//
 
 const User = new mongoose.model("User", userSchema);
 
